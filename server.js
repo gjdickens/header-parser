@@ -14,7 +14,6 @@ router.use(function(req, res, next) {
 });
 
 
-
 //landing page route
 
 app.use('/', express.static(path.join(__dirname, 'public')));
@@ -22,11 +21,14 @@ app.use('/', express.static(path.join(__dirname, 'public')));
 
 
 //take in data input
-router.route('/:date_input')
+router.route('/')
 
   .get(function(req, res) {
-
-      res.json({ message: 'hello world!'});
+    var regExpOs = /\(([^)]+)\)/;
+    var osLong = regExpOs.exec(req.headers['user-agent'])[1];
+    var language = req.headers['accept-language'];
+    var languageArr = language.split(";");
+    res.json({ "ipaddress": req.headers['host'], "software": osLong, "language": languageArr[0]});
   });
 
 // Register Routes
