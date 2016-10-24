@@ -24,11 +24,16 @@ app.use('/', express.static(path.join(__dirname, 'public')));
 router.route('/')
 
   .get(function(req, res) {
+    var ip = req.headers['x-forwarded-for'] ||
+     req.connection.remoteAddress ||
+     req.socket.remoteAddress ||
+     req.connection.socket.remoteAddress;
+
     var regExpOs = /\(([^)]+)\)/;
     var osLong = regExpOs.exec(req.headers['user-agent'])[1];
     var language = req.headers['accept-language'];
     var languageArr = language.split(";");
-    res.json({"ipaddress": req.connection.remoteAddress, "software": osLong, "language": languageArr[0]});
+    res.json({"ipaddress": ip, "software": osLong, "language": languageArr[0]});
   });
 
 // Register Routes
