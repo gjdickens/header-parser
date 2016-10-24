@@ -32,7 +32,7 @@ router.route('/')
     var regExpOs = /\(([^)]+)\)/;
     var osLong = regExpOs.exec(req.headers['user-agent'])[1];
     var language = req.headers['accept-language'];
-    var languageArr = language.split(";");
+    var languageArr = language.split(";")[0].split(",");
     res.json({"ipaddress": ip, "software": osLong, "language": languageArr[0]});
   });
 
